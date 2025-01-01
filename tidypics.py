@@ -4,7 +4,7 @@
 Tile: Tidypics Python 
 Auteur: CipherMike
 Date: 01-Jan-2025 
-Description: A tool to clean duplicate pictures especially on synoligy NAS 
+Description: A tool to clean duplicate pictures especially on synology NAS 
 Version: 1.0.0
 """
 
