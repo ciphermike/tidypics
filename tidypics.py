@@ -1,3 +1,14 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*- 
+""" 
+Tile: Tidypics Python 
+Auteur: CipherMike
+Date: 01-Jan-2025 
+Description: A tool to clean duplicate pictures especially on synoligy NAS 
+Version: 1.0.0
+"""
+
+
 import os
 import shutil
 import sys
