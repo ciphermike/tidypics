@@ -13,30 +13,54 @@ import os
 import shutil
 import sys
 import random
+import hashlib
+
+def calculate_hash(file_path): 
+    sha256 = hashlib.sha256() 
+    with open(file_path, 'rb') as f: 
+        for byte_block in iter(lambda: f.read(4096), b''): 
+            sha256.update(byte_block) 
+    return sha256.hexdigest()
 
 def move_files(src_dir, dest_dir, extensions, verbose=False):
     for root, dirs, files in os.walk(src_dir, topdown=False):
         for file in files:
             # check if ZbThumbnail.info exits, remove it
-            if file == "ZbThumbnail.info" or ".picasa.ini":
+            if file == "ZbThumbnail.info" or file == ".picasa.ini":
+
                 os.remove(os.path.join(root, file)) 
                 print(f"Deleted : {os.path.join(root, file)}")
 
             if any(file.lower().endswith(ext) for ext in extensions):
                 src_file = os.path.join(root, file)
                 dest_file = os.path.join(dest_dir, file)
+                print(f"src file is : {src_file}")
+                print(f"dst file is : {dest_file}")
+                
 
-                while os.path.exists(dest_file):
+                if os.path.exists(dest_file):
                     print(f"exist, : {src_file} \n")
-                    name, ext = os.path.splitext(file) 
-                    random_suffix = f"{random.randint(100, 999)}" 
-                    file = f"{name}_{random_suffix}{ext}" 
-                    dest_file = os.path.join(dest_dir, file)
-   
+                    src_hash = calculate_hash(src_file)
+                    dest_hash = calculate_hash(dest_file)
+                   
+                    if src_hash == dest_hash:
+                        print(f"file {src_file} is identical. Will be deleted")
+                        
+                        if not verbose:
+                            os.remove(src_file)
+                            continue
+                        else:
+                            print(f"file {src_file} is identical. skipped")
+                    else:
+                        name, ext = os.path.splitext(file) 
+                        random_suffix = f"{random.randint(100, 999)}" 
+                        file = f"{name}_{random_suffix}{ext}" 
+                        dest_file = os.path.join(dest_dir, file)
+            
                 shutil.move(src_file, dest_file)
                 print(f"Moved: {src_file} -> {dest_file}")
-              
-                    
+            
+                                 
 
         # Supprimer les répertoires vides avec confirmation
         for dir in dirs:
