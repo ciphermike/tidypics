@@ -12,4 +12,4 @@ This version detects duplicated only by name.
 ## Usage 
 ```bash
 python tidypics.py <src_dir> <dest_dir> [-v]
--V stands for verbose mode.
+-v stands for verbose mode.
